@@ -9,6 +9,7 @@ import listPlugin from "@fullcalendar/list";
 import {
     Box,
     useTheme,
+    Grid
 
 } from "@mui/material";
 
@@ -77,65 +78,72 @@ const Calendar = () => {
         <Box m="20px">
             <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
 
-            <Box display="flex" justifyContent="space-between">
-                {/* CALENDAR SIDEBAR */}
-                {/* para futuras actalizaciones tal vez */}
+            <Grid container>
+                <Grid item xs={12} sm={12} md={12}>
+                    <Box display="flex" justifyContent="space-between">
+                        {/* CALENDAR SIDEBAR */}
+                        {/* para futuras actalizaciones tal vez */}
 
 
-                {/* CALENDAR */}
-                <Box flex="1 1 100%" ml="15px">
-                    <FullCalendar
-                        height="75vh"
-                        plugins={[
-                            dayGridPlugin,
-                            timeGridPlugin,
-                            interactionPlugin,
-                            listPlugin,
-                        ]}
-                        headerToolbar={{
-                            left: "prev,next today",
-                            center: "title",
-                            right: "dayGridMonth",
-                        }}
-                        initialView="dayGridMonth"
-                        editable={true}
-                        selectable={true}
-                        selectMirror={true}
-                        dayMaxEvents={true}
-                        select={handleDateClick}
-                        eventClick={handleEventClick}
-                        ref={calendarRef}
-                        eventsSet={(events) => setCurrentEvents(events)}
-                        eventDisplay={"block"}
-                        eventTimeFormat={
-                            {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                hour12: false,
-                                meridiem: false,
-                                omitZeroMinute: false
-                            }
-                        }
-                        displayEventTime={true}
-                        displayEventEnd={true}
-                    // displayEventTime={true}
-                    // initialEvents={[
-                    //     {
-                    //         id: "12315",
-                    //         title: "All-day event",
-                    //         date: "2023-03-14",
-                    //     },
-                    //     {
-                    //         id: "5123",
-                    //         title: "Timed event",
-                    //         date: "2023-03-28",
-                    //     },
+                        {/* CALENDAR */}
+                        <Box flex="1 1 100%" ml="15px">
+                            <FullCalendar
+                                height="75vh"
+                                plugins={[
+                                    dayGridPlugin,
+                                    timeGridPlugin,
+                                    interactionPlugin,
+                                    listPlugin,
+                                ]}
+                                headerToolbar={{
+                                    left: "prev,next today",
+                                    center: "title",
+                                    right: "dayGridMonth",
+                                }}
+                                initialView="dayGridMonth"
+                                editable={true}
+                                selectable={true}
+                                selectMirror={true}
+                                dayMaxEvents={true}
+                                select={handleDateClick}
+                                eventClick={handleEventClick}
+                                ref={calendarRef}
+                                eventsSet={(events) => setCurrentEvents(events)}
+                                eventDisplay={"block"}
+                                eventTimeFormat={
+                                    {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: false,
+                                        meridiem: false,
+                                        omitZeroMinute: false
+                                    }
+                                }
+                                displayEventTime={true}
+                                displayEventEnd={true}
+                                longPressDelay={"100"} //cuanto tiene que presionar en moviles para que se active el dia
+                            // displayEventTime={true}
+                            // initialEvents={[
+                            //     {
+                            //         id: "12315",
+                            //         title: "All-day event",
+                            //         date: "2023-03-14",
+                            //     },
+                            //     {
+                            //         id: "5123",
+                            //         title: "Timed event",
+                            //         date: "2023-03-28",
+                            //     },
 
-                    // ]}
-                    />
-                </Box>
-                {open ? <HorarioModal open={open} setOpen={setOpen} onEventAdded={event => onEventAdded(event)} /> : ""}
-            </Box>
+                            // ]}
+                            />
+                        </Box>
+                        {open ? <HorarioModal open={open} setOpen={setOpen} onEventAdded={event => onEventAdded(event)} /> : ""}
+                    </Box>
+                </Grid>
+
+            </Grid>
+
         </Box>
     );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, TextField, Grid, useTheme, Box, Container } from '@mui/material';
+import { Button, Modal, TextField, Grid, useTheme, Box, Container, Typography } from '@mui/material';
 import { tokens } from "../../theme";
 
 
@@ -57,38 +57,49 @@ export default function HorarioModal(props) {
                             top: "50%",
                             left: "50%",
                             transform: 'translate(-50%, -50%)'
-                        }} padding={5} width="50vw" height="50vh" backgroundColor={colors.primary[400]} borderRadius="35px" >
+                        }} padding={5} width="80vw" height="60vh" backgroundColor={colors.primary[400]} borderRadius="35px" >
                             <h2 id="turno-modal">Horario</h2>
                             <Grid container justifyContent="space-between"
                                 alignItems="center" spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <h4>Inicio Turno 1</h4>
+                                <Grid item xs={6} sm={6}>
+                                    <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
+                                        Inicio Turno 1
+                                    </Typography>
+                                    {/* <h4></h4> */}
                                     <TextField id="iniTur_1" name="iniTur_1" label="Inicio turno 1" type="time" InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <h4>Fin Turno 1</h4>
+                                <Grid item xs={6} sm={6}>
+                                    <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
+                                        Fin Turno 1
+                                    </Typography>
                                     <TextField id="finTur_1" name="finTur_1" label="Fin turno 1" type="time" InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
 
-                                <Grid item xs={12} sm={6}>
-                                    <h4>Inicio Turno 2</h4>
+                                <Grid item xs={6} sm={6}>
+                                    <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
+                                        Inicio Turno 2
+                                    </Typography>
                                     <TextField id="iniTur_2" name="iniTur_2" label="Inicio turno 2" type="time" InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <h4>Fin Turno 2</h4>
+                                <Grid item xs={6} sm={6}>
+                                    <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
+                                        Fin Turno 2
+                                    </Typography>
                                     <TextField id="finTur_2" name="finTur_2" label="Fin turno 2" type="time" InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
                             </Grid>
-                            <h6>Llena el turno 2 si tienes un turno partido</h6>
-                            <div style={{ marginTop: '20px', padding: "15px" }}>
+                            <Typography padding={"0.5rem"} variant='h6' fontSize="0.60rem">
+                                Llena el turno 2 si tienes un turno partido
+                            </Typography>
+                            <div style={{ display: "flex", marginTop: '15px', padding: "15px" }}>
 
                                 <Button variant="contained" color="secondary" type="submit">
                                     Save Changes
