@@ -47,7 +47,7 @@ export default function Sidebar() {
     const colors = tokens(theme.palette.mode);
 
     // state para determimar si la sidebar esta o no colapsada 
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     // state para determimar cual vista esta seleccionada por default y en que pagina estamos (routes)
     const [selected, setSelected] = useState("Dashboard");
@@ -64,6 +64,7 @@ export default function Sidebar() {
             },
             "& .pro-inner-item": {
                 padding: "5px 35px 5px 20px !important",
+                marginLeft: "-10px"
             },
             "& .pro-inner-item:hover": {
                 color: "#868dfb !important",
@@ -73,7 +74,7 @@ export default function Sidebar() {
             },
         }} >
 
-            <ProSidebar collapsed={isCollapsed}>
+            <ProSidebar collapsedWidth="55px" collapsed={isCollapsed}>
                 <Menu iconShape="square">
                     {/* LOGO AND MENU ICON */}
                     <MenuItem
@@ -169,7 +170,7 @@ export default function Sidebar() {
                         <Typography
                             variant="h6"
                             color={colors.grey[300]}
-                            sx={{ m: "15px 0 5px 20px" }}
+                            sx={{ m: "15px 0 5px 12px" }}
                         >
                             Pages
                         </Typography>
@@ -198,7 +199,7 @@ export default function Sidebar() {
                         <Typography
                             variant="h6"
                             color={colors.grey[300]}
-                            sx={{ m: "15px 0 5px 20px" }}
+                            sx={{ m: "15px 0 5px 12px" }}
                         >
                             Charts
                         </Typography>

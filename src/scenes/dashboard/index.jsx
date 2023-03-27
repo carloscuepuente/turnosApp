@@ -9,7 +9,7 @@ export default function Dashboard() {
 
     return (
         <div>
-            soy un dashboard
+            pagina en construccion, pincha el calendario
         </div>
     )
 

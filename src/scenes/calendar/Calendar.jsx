@@ -76,7 +76,7 @@ const Calendar = () => {
 
     return (
         <Box m="20px">
-            <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+            <Header title="Calendar" />
 
             <Grid container>
                 <Grid item xs={12} sm={12} md={12}>
@@ -86,9 +86,9 @@ const Calendar = () => {
 
 
                         {/* CALENDAR */}
-                        <Box flex="1 1 100%" ml="15px">
+                        <Box flex="1 1 100%" ml={{ xs: 0, md: "15px" }}>
                             <FullCalendar
-                                height="75vh"
+                                height="80vh"
                                 plugins={[
                                     dayGridPlugin,
                                     timeGridPlugin,

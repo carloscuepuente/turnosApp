@@ -24,7 +24,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material" //cssbaseline resetea
 import { Routes, Route } from "react-router-dom"
 
 // componentes
-import Topbar from "./scenes/global/Topbar"
+// import Topbar from "./scenes/global/Topbar"
 import Sidebar from "./scenes/global/Sidebar"
 import Dashboard from "./scenes/dashboard"
 // import Team from "./scenes/team"
@@ -49,9 +49,13 @@ function App() {
 
         <CssBaseline />
         <div className="app">
+
           <Sidebar />
+
+
+
           <main className="content">
-            <Topbar />
+            {/* <Topbar /> */}
             <Routes>
               <Route exact path="/" element={<Dashboard />} />
               {/* <Route exact path="/team" element={<Team />} /> */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, TextField, Grid, useTheme, Box, Container, Typography } from '@mui/material';
+import { Button, Modal, TextField, Grid, useTheme, Box, Container, Typography, useMediaQuery } from '@mui/material';
 import { tokens } from "../../theme";
 
 
@@ -7,7 +7,9 @@ export default function HorarioModal(props) {
     // extrayendo del hook los colores y cosas del tema
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const boxWidth = isSmallScreen ? "90vw" : "80vw";
+    const boxHeight = isSmallScreen ? "90vh" : "80vh";
 
     const { open, setOpen, onEventAdded } = props
     // console.log(props)
@@ -56,14 +58,18 @@ export default function HorarioModal(props) {
                             position: "fixed",
                             top: "50%",
                             left: "50%",
-                            transform: 'translate(-50%, -50%)'
-                        }} padding={5} width="80vw" height="60vh" backgroundColor={colors.primary[400]} borderRadius="35px" >
+                            transform: 'translate(-50%, -50%)',
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-around",
+                            alignItems: "space-around"
+                        }} padding={5} width={boxWidth} height={boxHeight} backgroundColor={colors.primary[400]} borderRadius="35px" >
                             <h2 id="turno-modal">Horario</h2>
-                            <Grid container justifyContent="space-between"
+                            <Grid container justifyContent="space-evenly"
                                 alignItems="center" spacing={2}>
                                 <Grid item xs={6} sm={6}>
                                     <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
-                                        Inicio Turno 1
+                                        Entrada 1
                                     </Typography>
                                     {/* <h4></h4> */}
                                     <TextField id="iniTur_1" name="iniTur_1" label="Inicio turno 1" type="time" InputLabelProps={{
@@ -72,7 +78,7 @@ export default function HorarioModal(props) {
                                 </Grid>
                                 <Grid item xs={6} sm={6}>
                                     <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
-                                        Fin Turno 1
+                                        Salida 1
                                     </Typography>
                                     <TextField id="finTur_1" name="finTur_1" label="Fin turno 1" type="time" InputLabelProps={{
                                         shrink: true,
@@ -81,7 +87,7 @@ export default function HorarioModal(props) {
 
                                 <Grid item xs={6} sm={6}>
                                     <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
-                                        Inicio Turno 2
+                                        Entrada 2
                                     </Typography>
                                     <TextField id="iniTur_2" name="iniTur_2" label="Inicio turno 2" type="time" InputLabelProps={{
                                         shrink: true,
