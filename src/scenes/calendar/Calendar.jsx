@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import FullCalendar from "@fullcalendar/react";
 // import { formatDate } from "@fullcalendar/core";
 // import { formatRange } from '@fullcalendar/core';
@@ -17,26 +17,40 @@ import HorarioModal from "./HorarioModal";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
-const Calendar = () => {
+import { DayContext } from "../../context/day.context";
+
+const Calendar = (props) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
     // states 
     // current events tiene que ser parte del context para que pueda ser accedido desde toda la app
     // hay que hacer el context y el reducer
-    const [currentEvents, setCurrentEvents] = useState([]);
+    const [currentEvents, setCurrentEvents] = useState([{
+        id: "12315",
+        title: "All-day event",
+        date: "2023-03-14",
+    },
+    {
+        id: "5123",
+        title: "Timed event",
+        date: "2023-03-28",
+    }]);
 
     // para que pasara el built en netlify
-    console.log(colors, currentEvents)
+    console.log(colors)
 
     const [open, setOpen] = useState(false);
 
-    const calendarRef = useRef(null)
+    const { setDay } = useContext(DayContext)
+
+    const calendarRef = useRef(null);
+    // let topCalendarApi = calendarRef.current.getApi()
 
     const handleDateClick = (selected) => {
-        setOpen(true)
-
-
+        // setOpen(true)
+        // setDay(selected.dateStr)
+        // console.log(selected)
         // const title = prompt("Please enter a new title for your event");
         // const calendarApi = selected.view.calendar;
         // calendarApi.unselect();
@@ -59,7 +73,16 @@ const Calendar = () => {
         // hay que leerse la documentacion sobre el calendar api aqui
         // let calendarApi = calendarRef.current.getApi()
         let calendarApi = calendarRef.current.getApi()
-        calendarApi.addEvent(event)
+        console.log(event)
+
+        for (const ev of event) {
+            calendarApi.addEvent(ev)
+        }
+
+        // calendarApi.addEvent(...event)
+
+        setCurrentEvents([...currentEvents, ...event])
+
     }
 
     const handleEventClick = (selected) => {
@@ -71,6 +94,12 @@ const Calendar = () => {
             selected.event.remove();
         }
     };
+
+    const dateInfoClick = (info) => {
+        // console.log(info)
+        setDay(info.dateStr)
+        setOpen(true)
+    }
 
 
 
@@ -107,6 +136,7 @@ const Calendar = () => {
                                 dayMaxEvents={true}
                                 select={handleDateClick}
                                 eventClick={handleEventClick}
+                                dateClick={dateInfoClick}
                                 ref={calendarRef}
                                 eventsSet={(events) => setCurrentEvents(events)}
                                 eventDisplay={"block"}
@@ -121,8 +151,9 @@ const Calendar = () => {
                                 }
                                 displayEventTime={true}
                                 displayEventEnd={true}
-                                longPressDelay={"100"} //cuanto tiene que presionar en moviles para que se active el dia
-                            // displayEventTime={true}
+                                longPressDelay={"25"} //cuanto tiene que presionar en moviles para que se active el dia
+                                // displayEventTime={true}
+                                initialEvents={currentEvents}
                             // initialEvents={[
                             //     {
                             //         id: "12315",
@@ -138,7 +169,7 @@ const Calendar = () => {
                             // ]}
                             />
                         </Box>
-                        {open ? <HorarioModal open={open} setOpen={setOpen} onEventAdded={event => onEventAdded(event)} /> : ""}
+                        {open ? <HorarioModal dateInfoClick={dateInfoClick} open={open} setOpen={setOpen} onEventAdded={event => onEventAdded(event)} /> : ""}
                     </Box>
                 </Grid>
 

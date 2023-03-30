@@ -1,23 +1,41 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Modal, TextField, Grid, useTheme, Box, Container, Typography, useMediaQuery } from '@mui/material';
 import { tokens } from "../../theme";
 
+import { DayContext } from '../../context/day.context';
 
 export default function HorarioModal(props) {
     // extrayendo del hook los colores y cosas del tema
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+
+    // para manejar el tamaño del modal
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
     const boxWidth = isSmallScreen ? "90vw" : "80vw";
     const boxHeight = isSmallScreen ? "90vh" : "80vh";
 
-    const { open, setOpen, onEventAdded } = props
-    // console.log(props)
+    // metodos pasadas desde el componente padre Calendar
+    const { open, setOpen, onEventAdded } = props;
 
-    // const handleOpen = () => {
-    //     setOpen(true);
-    // };
+    // para acceder al contexto dia del componente Calendar
+    const { day } = useContext(DayContext)
 
+    // state para manejar el estado del formulario y poder extraer cosas de el y pasarselas al metodo handleSubmit
+    const [turnoDayForm, setTurnoDayForm] = useState({
+        entrada1: "",
+        salida1: "",
+        entrada2: "",
+        salida2: ""
+    });
+
+    const handleTurnoDayFormChange = (event) => {
+        const { name, value } = event.target;
+        setTurnoDayForm((prevState) => (
+            { ...prevState, [name]: value }
+        ));
+    }
+
+    // maneja lo que hace el modal cuando se presiona el boton de cerrar
     const handleClose = () => {
         setOpen(false);
     };
@@ -26,13 +44,48 @@ export default function HorarioModal(props) {
         event.preventDefault();
         // Do something with the form data
 
-        onEventAdded({
-            // title: "soy evento",
-            // start: Date.now(),
-            start: '2023-03-16T20:00:00',
-            // end: Date.now(),
-            end: '2023-03-16T22:00:00',
-        })
+        console.log(turnoDayForm.entrada2)
+
+
+        if (turnoDayForm.entrada1 && turnoDayForm.salida1 && turnoDayForm.entrada2 && turnoDayForm.salida2) {
+            onEventAdded([{
+                id: "12315",
+                // title: "soy evento",
+                // start: Date.now(),
+                start: `${day}T${turnoDayForm.entrada1}:00`,
+                // start: '2023-03-16T20:00:00',
+                // end: Date.now(),
+                end: `${day}T${turnoDayForm.salida1}:00`,
+            }, {
+                id: "5678",
+                // title: "soy evento",
+                // start: Date.now(),
+                start: `${day}T${turnoDayForm.entrada2}:00`,
+                // start: '2023-03-16T20:00:00',
+                // end: Date.now(),
+                end: `${day}T${turnoDayForm.salida2}:00`,
+            }])
+        } else {
+            onEventAdded([{
+                id: "12315",
+                // title: "soy evento",
+                // start: Date.now(),
+                start: `${day}T${turnoDayForm.entrada1}:00`,
+                // start: '2023-03-16T20:00:00',
+                // end: Date.now(),
+                end: `${day}T${turnoDayForm.salida1}:00`,
+            }])
+        }
+
+        // onEventAdded({
+        //     id: "12315",
+        //     title: "soy evento",
+        //     // start: Date.now(),
+        //     start: `${day}T20:00:00`,
+        //     // start: '2023-03-16T20:00:00',
+        //     // end: Date.now(),
+        //     end: `${day}T22:00:00`,
+        // })
 
 
         handleClose();
@@ -72,7 +125,7 @@ export default function HorarioModal(props) {
                                         Entrada 1
                                     </Typography>
                                     {/* <h4></h4> */}
-                                    <TextField id="iniTur_1" name="iniTur_1" label="Inicio turno 1" type="time" InputLabelProps={{
+                                    <TextField id="entrada1" name="entrada1" label="Inicio turno 1" type="time" onChange={handleTurnoDayFormChange} InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
@@ -80,7 +133,7 @@ export default function HorarioModal(props) {
                                     <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
                                         Salida 1
                                     </Typography>
-                                    <TextField id="finTur_1" name="finTur_1" label="Fin turno 1" type="time" InputLabelProps={{
+                                    <TextField id="salida1" name="salida1" label="Fin turno 1" type="time" onChange={handleTurnoDayFormChange} InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
@@ -89,21 +142,21 @@ export default function HorarioModal(props) {
                                     <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
                                         Entrada 2
                                     </Typography>
-                                    <TextField id="iniTur_2" name="iniTur_2" label="Inicio turno 2" type="time" InputLabelProps={{
+                                    <TextField id="entrada2" name="entrada2" label="Inicio turno 2" type="time" onChange={handleTurnoDayFormChange} InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
                                 <Grid item xs={6} sm={6}>
                                     <Typography padding={"1rem"} variant='h6' fontSize="0.90rem">
-                                        Fin Turno 2
+                                        Salida 2
                                     </Typography>
-                                    <TextField id="finTur_2" name="finTur_2" label="Fin turno 2" type="time" InputLabelProps={{
+                                    <TextField id="salida2" name="salida2" label="Fin turno 2" type="time" onChange={handleTurnoDayFormChange} InputLabelProps={{
                                         shrink: true,
                                     }} fullWidth />
                                 </Grid>
                             </Grid>
                             <Typography padding={"0.5rem"} variant='h6' fontSize="0.60rem">
-                                Llena el turno 2 si tienes un turno partido
+                                Llena el turno 2 solo si tienes un turno partido
                             </Typography>
                             <div style={{ display: "flex", marginTop: '15px', padding: "15px" }}>
 

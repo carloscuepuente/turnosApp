@@ -38,6 +38,9 @@ import Dashboard from "./scenes/dashboard"
 // import Geography from "./scenes/geography"
 import Calendar from "./scenes/calendar/Calendar.jsx"
 
+// context
+import { DayProvider } from "./context/day.context";
+
 function App() {
 
   const [theme, colorMode] = useMode()
@@ -46,31 +49,32 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
 
       <ThemeProvider theme={theme}>
+        <DayProvider>
+          <CssBaseline />
+          <div className="app">
 
-        <CssBaseline />
-        <div className="app">
-
-          <Sidebar />
+            <Sidebar />
 
 
 
-          <main className="content">
-            {/* <Topbar /> */}
-            <Routes>
-              <Route exact path="/" element={<Dashboard />} />
-              {/* <Route exact path="/team" element={<Team />} /> */}
-              {/* <Route exact path="/contacts" element={<Contacts />} /> */}
-              {/* <Route exact path="/invoices" element={<Invoices />} /> */}
-              {/* <Route exact path="/form" element={<Form />} /> */}
-              {/* <Route exact path="/bar" element={<Bar />} /> */}
-              {/* <Route exact path="/pie" element={<Pie />} /> */}
-              {/* <Route exact path="/line" element={<Line />} /> */}
-              {/* <Route exact path="/faq" element={<FAQ />} /> */}
-              <Route exact path="/calendar" element={<Calendar />} />
-              {/* <Route exact path="/geography" element={<Geography />} /> */}
-            </Routes>
-          </main>
-        </div>
+            <main className="content">
+              {/* <Topbar /> */}
+              <Routes>
+                <Route exact path="/" element={<Dashboard />} />
+                {/* <Route exact path="/team" element={<Team />} /> */}
+                {/* <Route exact path="/contacts" element={<Contacts />} /> */}
+                {/* <Route exact path="/invoices" element={<Invoices />} /> */}
+                {/* <Route exact path="/form" element={<Form />} /> */}
+                {/* <Route exact path="/bar" element={<Bar />} /> */}
+                {/* <Route exact path="/pie" element={<Pie />} /> */}
+                {/* <Route exact path="/line" element={<Line />} /> */}
+                {/* <Route exact path="/faq" element={<FAQ />} /> */}
+                <Route exact path="/calendar" element={<Calendar />} />
+                {/* <Route exact path="/geography" element={<Geography />} /> */}
+              </Routes>
+            </main>
+          </div>
+        </DayProvider>
 
       </ThemeProvider>
 
