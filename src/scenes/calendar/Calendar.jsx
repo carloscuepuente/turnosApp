@@ -18,6 +18,7 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
 import { DayContext } from "../../context/day.context";
+import { useLocalStorageState } from "../../hooks/useLocalStorage";
 
 const Calendar = (props) => {
     const theme = useTheme();
@@ -26,18 +27,20 @@ const Calendar = (props) => {
     // states 
     // current events tiene que ser parte del context para que pueda ser accedido desde toda la app
     // hay que hacer el context y el reducer
-    const [currentEvents, setCurrentEvents] = useState([{
-        id: "12315",
-        title: "All-day event",
-        date: "2023-03-14",
-    },
-    {
-        id: "5123",
-        title: "Timed event",
-        date: "2023-03-28",
-    }]);
+    // const [currentEvents, setCurrentEvents] = useState([{
+    //     id: "12315",
+    //     title: "All-day event",
+    //     date: "2023-03-14",
+    // },
+    // {
+    //     id: "5123",
+    //     title: "Timed event",
+    //     date: "2023-03-28",
+    // }]);
 
-    // para que pasara el built en netlify
+    const [currentEvents, setCurrentEvents] = useLocalStorageState("turnos", [])
+
+    //* para que pasara el built en netlify
     console.log(colors)
 
     const [open, setOpen] = useState(false);
@@ -45,8 +48,9 @@ const Calendar = (props) => {
     const { setDay } = useContext(DayContext)
 
     const calendarRef = useRef(null);
-    // let topCalendarApi = calendarRef.current.getApi()
 
+
+    //* tiene todo el contenido comentado dentro
     const handleDateClick = (selected) => {
         // setOpen(true)
         // setDay(selected.dateStr)
@@ -70,7 +74,7 @@ const Calendar = (props) => {
 
     const onEventAdded = (event) => {
 
-        // hay que leerse la documentacion sobre el calendar api aqui
+        //* hay que leerse la documentacion sobre el calendar api aqui
         // let calendarApi = calendarRef.current.getApi()
         let calendarApi = calendarRef.current.getApi()
         console.log(event)
@@ -83,15 +87,32 @@ const Calendar = (props) => {
 
         setCurrentEvents([...currentEvents, ...event])
 
+    };
+
+    // todo esto deberia estar en un futuro reducer o en un context o algo asi aqui no queda bien
+    const removeTurno = (turnoId) => {
+        const updatedCurrentEvents = currentEvents.filter(turno => turno.id !== turnoId);
+        setCurrentEvents(updatedCurrentEvents)
     }
 
     const handleEventClick = (selected) => {
+        // console.log(selected)
         if (
             window.confirm(
-                `Are you sure you want to delete the event '${selected.event.title}'`
+                `Are you sure you want to delete the events`
             )
         ) {
-            selected.event.remove();
+            let calendarApi = calendarRef.current.getApi();
+
+            const eventos = calendarApi.getEvents() //un array con todos los eventos del calendario
+
+            //* de esos eventos filtramos los que tengan el mismo group id del que seleccionamos y borramos todos los eventos
+            //*de esa forma limpio el calendario visualmente y con el metodo de abajo limpio el state a la vez
+            for (const ev of eventos.filter(e => e.groupId === selected.event.groupId)) {
+                ev.remove()
+            }
+            removeTurno(selected.event.id)
+            // selected.event.remove();
         }
     };
 
@@ -134,11 +155,11 @@ const Calendar = (props) => {
                                 selectable={true}
                                 selectMirror={true}
                                 dayMaxEvents={true}
-                                select={handleDateClick}
-                                eventClick={handleEventClick}
-                                dateClick={dateInfoClick}
+                                select={handleDateClick} //no hace nada
+                                eventClick={handleEventClick} //borra un evento
+                                dateClick={dateInfoClick} //abre el modal
                                 ref={calendarRef}
-                                eventsSet={(events) => setCurrentEvents(events)}
+                                // eventsSet={(events) => setCurrentEvents(events)}
                                 eventDisplay={"block"}
                                 eventTimeFormat={
                                     {
@@ -149,11 +170,12 @@ const Calendar = (props) => {
                                         omitZeroMinute: false
                                     }
                                 }
-                                displayEventTime={true}
-                                displayEventEnd={true}
+                                displayEventTime={false}
+                                displayEventEnd={false}
                                 longPressDelay={"25"} //cuanto tiene que presionar en moviles para que se active el dia
                                 // displayEventTime={true}
                                 initialEvents={currentEvents}
+                                nextDayThreshold='09:00:00'
                             // initialEvents={[
                             //     {
                             //         id: "12315",

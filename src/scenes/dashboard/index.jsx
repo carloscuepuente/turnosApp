@@ -6,11 +6,18 @@ import React from 'react';
 
 export default function Dashboard() {
 
+    const borrarLocalStorage = () => {
+        localStorage.clear()
+    }
 
     return (
-        <div>
-            pagina en construccion, pincha el calendario
-        </div>
+        <>
+            <div>
+                pagina en construccion, pincha el calendario
+            </div>
+            <button onClick={borrarLocalStorage}>borrar el localStorage</button>
+        </>
+
     )
 
 

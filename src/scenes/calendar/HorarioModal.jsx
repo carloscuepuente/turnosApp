@@ -1,8 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Button, Modal, TextField, Grid, useTheme, Box, Container, Typography, useMediaQuery } from '@mui/material';
+// import moment from "moment"
 import { tokens } from "../../theme";
 
 import { DayContext } from '../../context/day.context';
+
+import { v4 as uuidv4 } from 'uuid';
 
 export default function HorarioModal(props) {
     // extrayendo del hook los colores y cosas del tema
@@ -40,40 +43,67 @@ export default function HorarioModal(props) {
         setOpen(false);
     };
 
+    // const isAfterMidnight = (day, time) => {
+    //     const momentTime = moment(`${day}T${time}`, "YYYY-MM-DDTHH:mm");
+    //     console.log(momentTime)
+    //     const midnight = moment(`${day}T00:00`, "YYYY-MM-DDTHH:mm");
+    //     console.log(momentTime.isAfter(midnight))
+    //     return momentTime.isAfter(midnight);
+    //     // const momentTime = moment(`${day}T${time}`, "YYYY-MM-DDTHH:mm");
+    //     // console.log(momentTime.format("YYYY-MM-DDTHH:mm"))
+    //     // const nextDay = moment(day).add(1, "day").format("YYYY-MM-DD");
+    //     // const midnight = moment(`${nextDay}T00:00`, "YYYY-MM-DDTHH:mm");
+    //     // console.log(momentTime.isAfter(midnight))
+    //     // return momentTime.isAfter(midnight);
+    // };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        // Do something with the form data
 
-        console.log(turnoDayForm.entrada2)
+        // console.log(day)
 
+        // TODO considerar abandonar el metodo de start y end con fechas y usar el title para representarlo en el calendar y como en la otra app generar el objeto propio
+        // que sera el que usemoas para el state
 
         if (turnoDayForm.entrada1 && turnoDayForm.salida1 && turnoDayForm.entrada2 && turnoDayForm.salida2) {
+            let id = uuidv4()
             onEventAdded([{
-                id: "12315",
-                // title: "soy evento",
-                // start: Date.now(),
-                start: `${day}T${turnoDayForm.entrada1}:00`,
+                id: id,
+                groupId: id,
+                title: `${turnoDayForm.entrada1} - ${turnoDayForm.salida1}`,
+                date: `${day}`,
+                // start: `${day}T${turnoDayForm.entrada1}:00`,
+                // *por propositos de recordar que existian estas propiedades y como las habia escrito en su epoca
                 // start: '2023-03-16T20:00:00',
-                // end: Date.now(),
-                end: `${day}T${turnoDayForm.salida1}:00`,
+                // end: `${day}T${turnoDayForm.salida1}:00`,
             }, {
-                id: "5678",
-                // title: "soy evento",
-                // start: Date.now(),
-                start: `${day}T${turnoDayForm.entrada2}:00`,
-                // start: '2023-03-16T20:00:00',
-                // end: Date.now(),
-                end: `${day}T${turnoDayForm.salida2}:00`,
+                id: id,
+                groupId: id,
+                title: `${turnoDayForm.entrada2} - ${turnoDayForm.salida2}`,
+                date: `${day}`,
+
+                // start: `${day}T${turnoDayForm.entrada2}:00`,
+                // end: `${day}T${turnoDayForm.salida2}:00`,
+            }, {
+                id: id,
+                groupId: id,
+                partidos: 1,
             }])
         } else {
+            let id = uuidv4()
             onEventAdded([{
-                id: "12315",
-                // title: "soy evento",
-                // start: Date.now(),
-                start: `${day}T${turnoDayForm.entrada1}:00`,
-                // start: '2023-03-16T20:00:00',
-                // end: Date.now(),
-                end: `${day}T${turnoDayForm.salida1}:00`,
+                id: id,
+                groupId: id,
+                title: `${turnoDayForm.entrada1} - ${turnoDayForm.salida1}`,
+                date: `${day}`,
+
+                // start: `${day}T${turnoDayForm.entrada1}:00`,
+                // end: `${day}T${turnoDayForm.salida1}:00`,
+            },
+            {
+                id: id,
+                groupId: id,
+                partidos: 0
             }])
         }
 
