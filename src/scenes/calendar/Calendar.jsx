@@ -41,7 +41,7 @@ const Calendar = (props) => {
     const [currentEvents, setCurrentEvents] = useLocalStorageState("turnos", [])
 
     //* para que pasara el built en netlify
-    console.log(colors)
+    console.log(colors.primary[100])
 
     const [open, setOpen] = useState(false);
 

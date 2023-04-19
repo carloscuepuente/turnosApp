@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Button, Modal, TextField, Grid, useTheme, Box, Container, Typography, useMediaQuery } from '@mui/material';
-// import moment from "moment"
+import moment from "moment"
 import { tokens } from "../../theme";
 
 import { DayContext } from '../../context/day.context';
@@ -21,7 +21,8 @@ export default function HorarioModal(props) {
     const { open, setOpen, onEventAdded } = props;
 
     // para acceder al contexto dia del componente Calendar
-    const { day } = useContext(DayContext)
+    const { day } = useContext(DayContext) //formato 2023-04-18 o YYYY-MM-DD
+
 
     // state para manejar el estado del formulario y poder extraer cosas de el y pasarselas al metodo handleSubmit
     const [turnoDayForm, setTurnoDayForm] = useState({
@@ -38,35 +39,115 @@ export default function HorarioModal(props) {
         ));
     }
 
-    // maneja lo que hace el modal cuando se presiona el boton de cerrar
+    // *maneja lo que hace el modal cuando se presiona el boton de cerrar
     const handleClose = () => {
         setOpen(false);
     };
 
-    // const isAfterMidnight = (day, time) => {
-    //     const momentTime = moment(`${day}T${time}`, "YYYY-MM-DDTHH:mm");
-    //     console.log(momentTime)
-    //     const midnight = moment(`${day}T00:00`, "YYYY-MM-DDTHH:mm");
-    //     console.log(momentTime.isAfter(midnight))
-    //     return momentTime.isAfter(midnight);
-    //     // const momentTime = moment(`${day}T${time}`, "YYYY-MM-DDTHH:mm");
-    //     // console.log(momentTime.format("YYYY-MM-DDTHH:mm"))
-    //     // const nextDay = moment(day).add(1, "day").format("YYYY-MM-DD");
-    //     // const midnight = moment(`${nextDay}T00:00`, "YYYY-MM-DDTHH:mm");
-    //     // console.log(momentTime.isAfter(midnight))
-    //     // return momentTime.isAfter(midnight);
-    // };
+    // * formulas para los calculos llevarselas para un archivo aparte luego
+    const getDuration = (tiempo1, tiempo2) => {
+        const momentTiempo1 = moment(tiempo1, "HH:mm");
+        const momentTiempo2 = moment(tiempo2, "HH:mm");
+
+        // si el momento2 es despues del momento1 le sumamos un dia para los calculos
+        if (momentTiempo2.isBefore(momentTiempo1)) {
+            momentTiempo2.add(1, "day")
+        };
+        // regresa el valor absoluto de la diferencia por lo que siempre es positivo
+        const duration = momentTiempo2.diff(momentTiempo1, "minutes");
+
+        return duration
+    };
+
+    const isTimeBetween = (primerIntervalTime, segundoIntervalTime, tiempo) => {
+        // donde primerIntervalTime es el limite inferior de la ventana a comparar aka 22:00
+        // donde segundoIntervalTime es el limite inferior de la ventana a comparar aka 06:00 dia siguiente
+        // donde tiempo1 es el la entrada al turno
+        // donde tiempo2 es la salida del turno
+
+        // parseamos los tiempos a moments
+        // const momentprimerTime = moment(`${day} ${primerIntervalTime}`, `YYYY-MM-DD HH:mm`); esto no sirve problema con las zonas horarias
+        const momentprimerTime = moment(primerIntervalTime, `HH:mm`);
+        // let momentsegundoTime = moment(`${day} ${segundoIntervalTime}`, `YYYY-MM-DD HH:mm`);
+        const momentsegundoTime = moment(segundoIntervalTime, `HH:mm`);
+        // const momentTiempo = moment(`${day} ${tiempo}`, `YYYY-MM-DD HH:mm`);
+        const momentTiempo = moment(tiempo, `HH:mm`);
+
+        // chequeamos la correlacion de los tiempos y si son superiores les sumamos dias
+        if (momentsegundoTime.isBefore(momentprimerTime)) {
+            momentsegundoTime.add(1, "day")
+        };
+
+        if (momentTiempo.isBefore(momentprimerTime)) {
+            momentTiempo.add(1, "day")
+        };
+
+        // chequear aqui si uno o el otro estan dentro del intervalo de 22:00 a 06:00
+        // regresar true o false en funcion de ello
+        // el tercer y el cuarto elemento del isBetween, es la granularidad y la inclusion de los limites respectivamente
+        if (momentTiempo.isBetween(momentprimerTime, momentsegundoTime, undefined, [])) {
+            // //chequear aqui arriba el caso limite de cuando son la misma hora aka 22:00 entrada y limiteinferiror 22:00
+            return true
+        } else {
+            return false
+        };
+    }
+
+    const getNocturnidad = (entrada, salida, limiteInferior = "22:00", limiteSuperior = "06:00") => {
+
+        // si la entrada y la salida esta dentro del intervalo, hay nocturnidada y es la diferencia de tiempo
+        if (isTimeBetween(limiteInferior, limiteSuperior, entrada) && isTimeBetween(limiteInferior, limiteSuperior, salida)) {
+
+            const nocturnidada = getDuration(entrada, salida);
+            return nocturnidada
+        };
+
+        // si la entrada esta fuera del intervalo y la salida dentro, hay nocturnidad y es la diferencia entre la salida y el limiteInferior
+        if (!isTimeBetween(limiteInferior, limiteSuperior, entrada) && isTimeBetween(limiteInferior, limiteSuperior, salida)) {
+
+            const nocturnidad = getDuration(limiteInferior, salida);
+            return nocturnidad
+        }
+
+        // si la entrada esta dentro del intervalo y la salida fuera, hay nocturnidad y es la diferencia entre limiteSuperior y la entrada
+        if (isTimeBetween(limiteInferior, limiteSuperior, entrada) && !isTimeBetween(limiteInferior, limiteSuperior, salida)) {
+            const nocturnidad = getDuration(entrada, limiteSuperior);
+            return nocturnidad
+        }
+
+        // si ni la entrada ni la salida entan dentro del intervalo, no hay nocturnidad regresar un cero
+        if (!isTimeBetween(limiteInferior, limiteSuperior, entrada) && !isTimeBetween(limiteInferior, limiteSuperior, salida)) {
+            const nocturnidada = 0
+            return nocturnidada
+        };
+    };
+
+    const isPlusMadrugue = (entrada, limiteInferior = "04:00", limiteSuperior = "06:55") => {
+
+        // si la entrada esta dentro del intervalo, plusMadrugue true
+        if (isTimeBetween(limiteInferior, limiteSuperior, entrada)) {
+            return true
+        };
+
+        // si la entrada esta fuera del intervalo, plusMadruge false
+        if (!isTimeBetween(limiteInferior, limiteSuperior, entrada)) {
+            return false
+        }
+
+    }
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // console.log(day)
+        console.log(day)
 
         // TODO considerar abandonar el metodo de start y end con fechas y usar el title para representarlo en el calendar y como en la otra app generar el objeto propio
         // que sera el que usemoas para el state
 
         if (turnoDayForm.entrada1 && turnoDayForm.salida1 && turnoDayForm.entrada2 && turnoDayForm.salida2) {
             let id = uuidv4()
+
             onEventAdded([{
                 id: id,
                 groupId: id,
@@ -85,12 +166,19 @@ export default function HorarioModal(props) {
                 // start: `${day}T${turnoDayForm.entrada2}:00`,
                 // end: `${day}T${turnoDayForm.salida2}:00`,
             }, {
+                resumen: "resumen",
+                date: `${day}`,
                 id: id,
                 groupId: id,
-                partidos: 1,
+                partidos: true,
+                turnoDuracion: `${getDuration(turnoDayForm.entrada1, turnoDayForm.salida1) + getDuration(turnoDayForm.entrada2, turnoDayForm.salida2)}`,
+                nocturnidad: `${getNocturnidad(turnoDayForm.entrada1, turnoDayForm.salida1) + getNocturnidad(turnoDayForm.entrada2, turnoDayForm.salida2)}`,
+                plusMadrugue: isPlusMadrugue(turnoDayForm.entrada1), //todo falta testing de esta !
+                plusTransporte: true,
             }])
         } else {
             let id = uuidv4()
+
             onEventAdded([{
                 id: id,
                 groupId: id,
@@ -101,9 +189,15 @@ export default function HorarioModal(props) {
                 // end: `${day}T${turnoDayForm.salida1}:00`,
             },
             {
+                resumen: "resumen",
+                date: `${day}`,
                 id: id,
                 groupId: id,
-                partidos: 0
+                partidos: 0,
+                turnoDuracion: `${getDuration(turnoDayForm.entrada1, turnoDayForm.salida1)}`,
+                nocturnidad: `${getNocturnidad(turnoDayForm.entrada1, turnoDayForm.salida1)}`,
+                plusMadrugue: isPlusMadrugue(turnoDayForm.entrada1),
+                plusTransporte: true,
             }])
         }
 
@@ -204,3 +298,7 @@ export default function HorarioModal(props) {
         </>
     );
 };
+
+
+
+
