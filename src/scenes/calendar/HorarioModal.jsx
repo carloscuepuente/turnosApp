@@ -167,7 +167,7 @@ export default function HorarioModal(props) {
                 // end: `${day}T${turnoDayForm.salida2}:00`,
             }, {
                 resumen: "resumen",
-                date: `${day}`,
+                // date: `${day}`,
                 id: id,
                 groupId: id,
                 partidos: true,
@@ -190,7 +190,7 @@ export default function HorarioModal(props) {
             },
             {
                 resumen: "resumen",
-                date: `${day}`,
+                // date: `${day}`,
                 id: id,
                 groupId: id,
                 partidos: 0,
