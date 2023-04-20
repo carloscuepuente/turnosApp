@@ -134,7 +134,23 @@ export default function HorarioModal(props) {
             return false
         }
 
-    }
+    };
+
+    const isPlusManutencion = (entrada, salida) => {
+        // vamos a chequear las dos ventanas de tiempo por separado
+
+        // la de 14 a 16 usamos la funcion isTimeBetween para ver si 14 y 16 estan dentro del inicio y fin de turno y si ademas el turno es de mas de 6 o 360 min
+        if (isTimeBetween(entrada, salida, "14:00") && isTimeBetween(entrada, salida, "16:00") && parseInt(getDuration(entrada, salida)) >= 360) {
+            return true
+        };
+        if (isTimeBetween(entrada, salida, "21:00") && isTimeBetween(entrada, salida, "23:00") && parseInt(getDuration(entrada, salida)) >= 360) {
+            return true
+        };
+
+        return false
+
+
+    };
 
 
     const handleSubmit = (event) => {
@@ -167,7 +183,7 @@ export default function HorarioModal(props) {
                 // end: `${day}T${turnoDayForm.salida2}:00`,
             }, {
                 resumen: "resumen",
-                // date: `${day}`,
+                // date: `${day}`, //genera un evento vacio en el calendario ponerle otro nombre para ver si asi no lo genera
                 id: id,
                 groupId: id,
                 partidos: true,
@@ -175,6 +191,7 @@ export default function HorarioModal(props) {
                 nocturnidad: `${getNocturnidad(turnoDayForm.entrada1, turnoDayForm.salida1) + getNocturnidad(turnoDayForm.entrada2, turnoDayForm.salida2)}`,
                 plusMadrugue: isPlusMadrugue(turnoDayForm.entrada1), //todo falta testing de esta !
                 plusTransporte: true,
+                plusManutencion: (isPlusManutencion(turnoDayForm.entrada1, turnoDayForm.salida1) || isPlusManutencion(turnoDayForm.entrada2, turnoDayForm.salida2)) ? true : false
             }])
         } else {
             let id = uuidv4()
@@ -198,6 +215,7 @@ export default function HorarioModal(props) {
                 nocturnidad: `${getNocturnidad(turnoDayForm.entrada1, turnoDayForm.salida1)}`,
                 plusMadrugue: isPlusMadrugue(turnoDayForm.entrada1),
                 plusTransporte: true,
+                plusManutencion: isPlusManutencion(turnoDayForm.entrada1, turnoDayForm.salida1)
             }])
         }
 
