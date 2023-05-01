@@ -182,8 +182,8 @@ export default function HorarioModal(props) {
                 // start: `${day}T${turnoDayForm.entrada2}:00`,
                 // end: `${day}T${turnoDayForm.salida2}:00`,
             }, {
-                resumen: "resumen",
-                // date: `${day}`, //genera un evento vacio en el calendario ponerle otro nombre para ver si asi no lo genera
+                type: "resumen",
+                fecha: `${day}`, //genera un evento vacio en el calendario ponerle otro nombre para ver si asi no lo genera
                 id: id,
                 groupId: id,
                 partidos: true,
@@ -206,8 +206,8 @@ export default function HorarioModal(props) {
                 // end: `${day}T${turnoDayForm.salida1}:00`,
             },
             {
-                resumen: "resumen",
-                // date: `${day}`,
+                type: "resumen",
+                fecha: `${day}`,
                 id: id,
                 groupId: id,
                 partidos: 0,
