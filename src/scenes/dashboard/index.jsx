@@ -47,7 +47,8 @@ export default function Dashboard() {
         return value
     }
 
-    const data = getLocalStorage("turnos")
+    const data = getLocalStorage("turnos");
+    const perentoriasData = getLocalStorage("perentorias")
 
     const totalDuracion = data.reduce((acumulador, turno) => acumulador + parseInt(turno.turnoDuracion), 0)
     const totalNocturnidad = data.reduce((acumulador, turno) => acumulador + parseInt(turno.nocturnidad), 0)
@@ -55,7 +56,7 @@ export default function Dashboard() {
     const totalMadrugue = data.reduce((acumulador, turno) => acumulador + turno.plusMadrugue, 0)
     const totalManutencion = data.reduce((acumulador, turno) => acumulador + turno.plusManutencion, 0)
     const totalTransporte = data.reduce((acumulador, turno) => acumulador + turno.plusTransporte, 0)
-    const totalPerentorias = "0"
+    const totalPerentorias = perentoriasData.reduce((acumulador, dia) => acumulador + parseFloat(dia.perentoria), 0)
 
     // console.log(getLocalStorage("turnos"))
 
@@ -235,7 +236,7 @@ export default function Dashboard() {
                         justifyContent="center">
 
                         <Card
-                            info={totalPerentorias}
+                            info={totalPerentorias.toFixed(2)}
                             tipo={"Perentorias"}
                             cobro={"Mes Vencido"}
                             icono={<MoreTimeIcon sx={{ color: colors.greenAccent[600], fontSize: "30px" }} />}

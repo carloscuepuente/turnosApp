@@ -14,10 +14,11 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 // import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 // import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import LocalParkingOutlinedIcon from '@mui/icons-material/LocalParkingOutlined';
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
+// import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+// import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
+// import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 // import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 
@@ -59,9 +60,8 @@ export default function Sidebar() {
             position: "sticky",
             display: "flex",
             height: "100vh",
-            top: 0,
-            bottom: 0,
-            zIndex: 10000,
+
+            alignSelf: "flex-start",
             "& .pro-sidebar-inner": {
                 background: `${colors.primary[400]} !important`,
             },
@@ -129,7 +129,7 @@ export default function Sidebar() {
                                     Salary App Dashboard
                                 </Typography>
                                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                                    VP Fancy Admin
+                                    V Convenio
                                 </Typography>
                             </Box>
                         </Box>
@@ -188,9 +188,16 @@ export default function Sidebar() {
                             setSelected={setSelected}
                         /> */}
                         <Item
-                            title="Calendar"
+                            title="Horario"
                             to="/calendar"
                             icon={<CalendarTodayOutlinedIcon />}
+                            selected={selected}
+                            setSelected={setSelected}
+                        />
+                        <Item
+                            title="Perentorias"
+                            to="/perentorias"
+                            icon={<LocalParkingOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
                         />
@@ -202,7 +209,7 @@ export default function Sidebar() {
                             setSelected={setSelected}
                         />
 
-                        <Typography
+                        {/* <Typography
                             variant="h6"
                             color={colors.grey[300]}
                             sx={{ m: "15px 0 5px 12px" }}
@@ -229,7 +236,7 @@ export default function Sidebar() {
                             icon={<TimelineOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
-                        />
+                        /> */}
                         {/* <Item
                             title="Geography Chart"
                             to="/geography"

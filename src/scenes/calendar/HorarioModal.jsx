@@ -259,7 +259,7 @@ export default function HorarioModal(props) {
                             justifyContent: "space-around",
                             alignItems: "space-around"
                         }} padding={5} width={boxWidth} height={boxHeight} backgroundColor={colors.primary[400]} borderRadius="35px" >
-                            <h2 id="turno-modal">Horario</h2>
+                            <h2 id="turno-modal">Horario del {moment(day).format("D MMM")}</h2>
                             <Grid container justifyContent="space-evenly"
                                 alignItems="center" spacing={2}>
                                 <Grid item xs={6} sm={6}>

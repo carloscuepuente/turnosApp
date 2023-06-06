@@ -37,6 +37,7 @@ import Dashboard from "./scenes/dashboard"
 import FAQ from "./scenes/faq"
 // import Geography from "./scenes/geography"
 import Calendar from "./scenes/calendar/Calendar.jsx"
+import Perentorias from "./scenes/perentorias/Perentorias";
 
 // context
 import { DayProvider } from "./context/day.context";
@@ -70,6 +71,7 @@ function App() {
                 {/* <Route exact path="/line" element={<Line />} /> */}
                 <Route exact path="/faq" element={<FAQ />} />
                 <Route exact path="/calendar" element={<Calendar />} />
+                <Route exact path="/perentorias" element={<Perentorias />} />
                 {/* <Route exact path="/geography" element={<Geography />} /> */}
               </Routes>
             </main>
