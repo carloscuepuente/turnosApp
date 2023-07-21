@@ -202,8 +202,8 @@ export default function Sidebar() {
                             setSelected={setSelected}
                         />
                         <Item
-                            title="FAQ Page"
-                            to="/faq"
+                            title="Variables"
+                            to="/variables"
                             icon={<HelpOutlineOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}

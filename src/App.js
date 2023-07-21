@@ -69,7 +69,7 @@ function App() {
                 {/* <Route exact path="/bar" element={<Bar />} /> */}
                 {/* <Route exact path="/pie" element={<Pie />} /> */}
                 {/* <Route exact path="/line" element={<Line />} /> */}
-                <Route exact path="/faq" element={<FAQ />} />
+                <Route exact path="/variables" element={<FAQ />} />
                 <Route exact path="/calendar" element={<Calendar />} />
                 <Route exact path="/perentorias" element={<Perentorias />} />
                 {/* <Route exact path="/geography" element={<Geography />} /> */}
