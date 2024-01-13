@@ -26,20 +26,24 @@ export default function Dashboard() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const smScreen = useMediaQuery(theme.breakpoints.up("sm"));
+    // este es el estado del selector del mes y el año para que se muestre el dashboard correspondiente
     const [mes, setMes] = useState(moment().format("YYYY-MM"))
 
+    // este es el handler para fijar el state
     const handleChange = (event) => {
+        // console.log(event.target.value)
         setMes(event.target.value)
     }
 
+    // extrae del local storage las info guardada y hace la comparacion contra el mes y año seleccionado
     const getLocalStorage = (key) => {
         let value
         try {
             let rawValue = JSON.parse(
                 window.localStorage.getItem(key)
             );
-
-            value = rawValue.filter(item => item.type === "resumen" && moment(item.fecha).format("MM") === moment(mes).format("MM"))
+            // saca la info del localStorage y si es igual al mes y año del selector pasa a mostrarse la info en el dashboard
+            value = rawValue.filter(item => item.type === "resumen" && moment(item.fecha).format("MM") === moment(mes).format("MM") && moment(item.fecha).format("YYYY") === moment(mes).format("YYYY"))
 
         } catch (e) {
             value = []
@@ -59,6 +63,7 @@ export default function Dashboard() {
     const totalPerentorias = perentoriasData.reduce((acumulador, dia) => acumulador + parseFloat(dia.perentoria), 0)
 
     // console.log(getLocalStorage("turnos"))
+
 
     return (
         <Box m="20px">
@@ -112,7 +117,7 @@ export default function Dashboard() {
                         <Card
 
                             tipo={"Hay un bug con el calculo de horas en 2024"}
-                            cobro={"lo voy a intentar arreglar en breve"}
+                            cobro={"arreglado, voy a dejar esto un tiempo para avisar a los fantasticos usuarios de mi app"}
                             icono={<AccessTimeFilledIcon sx={{ color: colors.greenAccent[600], fontSize: "30px" }} />} />
 
                     </Box>
