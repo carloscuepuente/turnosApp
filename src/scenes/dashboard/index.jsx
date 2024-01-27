@@ -115,23 +115,6 @@ export default function Dashboard() {
                         justifyContent="center">
 
                         <Card
-
-                            tipo={"Hay un bug con el calculo de horas en 2024"}
-                            cobro={"arreglado, voy a dejar esto un tiempo para avisar a los fantasticos usuarios de mi app"}
-                            icono={<AccessTimeFilledIcon sx={{ color: colors.greenAccent[600], fontSize: "30px" }} />} />
-
-                    </Box>
-
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={3} xl={3} >
-                    <Box
-                        width="100%"
-                        backgroundColor={colors.primary[400]}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center">
-
-                        <Card
                             info={(totalDuracion / 60).toFixed(2)}
                             tipo={"Horas Trabajadas"}
                             cobro={"Este mes"}
